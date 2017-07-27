@@ -25,6 +25,12 @@ def get_bitstamp_price() -> Decimal:
     return Decimal(response.json()['ask'])
 
 
+def get_currency_conversion(to: str, base: str) -> Decimal:
+    url = f'http://api.fixer.io/latest?base={base}'
+    response = requests.get(url)
+    return Decimal(response.json()['rates'][to])
+
+
 if __name__ == '__main__':
     print('API test:')
     print(f'Coinbase: {get_coinbase_price()}')
