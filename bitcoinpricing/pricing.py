@@ -24,5 +24,6 @@ if __name__ == '__main__':
     conv = api.get_currency_conversion('EUR', 'GBP')
     coinbase_price = api.get_coinbase_price()
     print(f'Coinbase for different amounts (Base cost = {coinbase_price}):')
-    for i in (10 ** a for a in range(4)):
-        print(f'Quantity: {i} = {get_coinbase_buying_cost(coinbase_price, i, Decimal(4.00)*conv)} BTC/EUR')
+    for i in (3*10 ** a for a in range(4)):
+        print(f'Quantity debit: {i} = {get_coinbase_buying_cost(coinbase_price, i, Decimal(4.00))} BTC/GBP')
+        print(f'Quantity credit: {i} = {get_coinbase_buying_cost(coinbase_price, i, Decimal(i*0.0399))} BTC/GBP')

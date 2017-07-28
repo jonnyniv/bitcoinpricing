@@ -4,7 +4,7 @@ import requests
 
 
 def get_coinbase_price() -> Decimal:
-    url = 'https://api.coinbase.com/v2/prices/BTC-EUR/buy'
+    url = 'https://api.coinbase.com/v2/prices/BTC-GBP/buy'
     headers = {'CB-VERSION': '2017-05-19'}
     response = requests.get(url=url, headers=headers)
 
