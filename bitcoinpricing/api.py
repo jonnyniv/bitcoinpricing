@@ -28,11 +28,17 @@ def get_currency_conversion(to: str, base: str) -> Decimal:
 
 
 def get_site_prices(config: List[dict]) -> dict:
+    """ Uses the loaded config file and gets the current bitcoin prices from each site
+
+    :param config: The pre-validated config file
+    :return: The dictionary of decimal price values, with the names as keys
+    """
     prices = {}
     for site in config:
         prices[site['name']] = get_api_price(url=site['url'], decode=site['decode'], params=site.get('params', {}))
 
     return prices
+
 
 
 if __name__ == '__main__':
