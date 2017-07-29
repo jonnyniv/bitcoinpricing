@@ -1,0 +1,14 @@
+- name: Coinbase
+  url: https://api.coinbase.com/v2/prices/BTC-GBP/buy
+  params:
+    headers:
+      CB-VERSION: '2017-05-19'
+  decode: ['data', 'amount']
+
+- name: Coinfloor
+  url: https://webapi.coinfloor.co.uk:8090/bist/XBT/GBP/ticker/
+  decode: ['ask']
+
+- name: Bitstamp
+  url: https://www.bitstamp.net/api/v2/ticker/btcgbp/
+  decode: ['ask']

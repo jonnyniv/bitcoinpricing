@@ -22,7 +22,6 @@ def get_true_buying_cost(buying_cost: Decimal, quantity: Decimal, fixed_costs: D
 if __name__ == '__main__':
     print('Pricing tests')
     conv = api.get_currency_conversion('EUR', 'GBP')
-    coinbase_price = api.get_coinbase_price()
     print(f'Coinbase for different amounts (Base cost = {coinbase_price}):')
     for i in (3*10 ** a for a in range(4)):
         print(f'Quantity debit: {i} = {get_true_buying_cost(coinbase_price, i, Decimal(4.00))} BTC/GBP')

@@ -1,28 +1,24 @@
 from decimal import Decimal
 
 import requests
+from typing import List
 
 
-def get_coinbase_price() -> Decimal:
-    url = 'https://api.coinbase.com/v2/prices/BTC-GBP/buy'
-    headers = {'CB-VERSION': '2017-05-19'}
-    response = requests.get(url=url, headers=headers)
+def get_api_price(url: str, decode: List[str], params: dict = {}) -> Decimal:
+    """ Calls a generic api and returns the bitcoin price
 
-    return Decimal(response.json()['data']['amount'])
+    :param url: The API url to call
+    :param decode: A list of strings which will act as dictionary keys
+    :param params: A dictionary of keyword arguments passed to the request
+    :return: The bitcoin price in a decimal format
+    """
+    response = requests.get(url=url, **params)
 
+    js = response.json()
+    for key in decode:
+        js = js.get(key)
 
-def get_coinfloor_price() -> Decimal:
-    url = 'https://webapi.coinfloor.co.uk:8090/bist/XBT/EUR/ticker/'
-    response = requests.get(url=url)
-
-    return Decimal(response.json()['ask'])
-
-
-def get_bitstamp_price() -> Decimal:
-    url = 'https://www.bitstamp.net/api/v2/ticker/btceur/'
-    response = requests.get(url=url)
-
-    return Decimal(response.json()['ask'])
+    return Decimal(js)
 
 
 def get_currency_conversion(to: str, base: str) -> Decimal:
@@ -31,8 +27,17 @@ def get_currency_conversion(to: str, base: str) -> Decimal:
     return Decimal(response.json()['rates'][to])
 
 
+def get_site_prices(config: List[dict]) -> dict:
+    prices = {}
+    for site in config:
+        prices[site['name']] = get_api_price(url=site['url'], decode=site['decode'], params=site.get('params', {}))
+
+    return prices
+
+
 if __name__ == '__main__':
     print('API test:')
-    print(f'Coinbase: {get_coinbase_price()}')
-    print(f'Coinfloor: {get_coinfloor_price()}')
-    print(f'Bitstamp: {get_bitstamp_price()}')
+    import yaml
+    with open('sites.yml', 'r') as f:
+        config_file = yaml.load(f)
+    print(get_site_prices(config_file))
